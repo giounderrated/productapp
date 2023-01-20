@@ -1,9 +1,9 @@
 # productapp
 Springboot-postgresql-api
 
-# First complete product API.
+## First complete product API.
 
-## Functionalities
+### Functionalities
 - CRUD of products
 - CRUD of brands.
 - CRUD of categories.
