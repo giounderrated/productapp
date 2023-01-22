@@ -1,6 +1,5 @@
 package com.gcode.productapp.config.security;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +12,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static com.gcode.productapp.config.ApiPaths.*;
 
@@ -45,30 +42,16 @@ public class WebSecurityConfig {
 			.and()
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-			//cors
-			.cors()
-			.and()
+			.cors();
+//			.and()
 			// custom exception Access denied handler
-			.exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint())
-				.accessDeniedHandler(accessDeniedHandler());
+//			.exceptionHandling()
+//				.authenticationEntryPoint(authenticationEntryPoint())
+//				.accessDeniedHandler(accessDeniedHandler());
 		return http.build();
 
 //		http
 //			.csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
-	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:4200")
-						.allowedOrigins("http://localhost:3000")
-						.allowedMethods("*").allowedHeaders("*");
-			}
-		};
 	}
 
 	@Bean
