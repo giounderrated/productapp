@@ -42,12 +42,9 @@ public class WebSecurityConfig {
 			.and()
 			.authenticationProvider(authenticationProvider)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-			.cors();
-//			.and()
-			// custom exception Access denied handler
-//			.exceptionHandling()
-//				.authenticationEntryPoint(authenticationEntryPoint())
-//				.accessDeniedHandler(accessDeniedHandler());
+			.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint())
+				.accessDeniedHandler(accessDeniedHandler());
 		return http.build();
 
 //		http

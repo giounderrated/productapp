@@ -7,12 +7,14 @@ import com.gcode.productapp.users.domain.UserNotAllDetails;
 import com.gcode.productapp.users.services.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthenticationService {
 	private final UserService userService;
@@ -24,13 +26,13 @@ public class AuthenticationService {
 		var user = setUser(request);
 		userService.insertUser(user);
 		UserNotAllDetails details = UserNotAllDetails.builder()
-			.username(user.getUsername())
-			.email(user.getEmail())
-			.avatar(user.getAvatar())
-			.Role(user.getRole())
-			.build();
+				.username(user.getUsername())
+				.email(user.getEmail())
+				.avatar(user.getAvatar())
+				.Role(user.getRole())
+				.build();
 		final String token = jwtService.generateToken(user);
-		return new AuthenticationResponse(token,details);
+		return new AuthenticationResponse(token, details);
 	}
 
 	private User setUser(RegisterRequest request) {
@@ -46,27 +48,29 @@ public class AuthenticationService {
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
+		log.info(request.toString());
 		var user = userService.getUserByEmail(request.getEmail());
 
-		if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			log.info(String.format("User with email %s has invalid email or password", user.getEmail()));
 			throw new IllegalArgumentException("Datos incorrectos");
 		}
 
 		authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(
-				request.getEmail(),
-				request.getPassword()
-			)
+				new UsernamePasswordAuthenticationToken(
+						request.getEmail(),
+						request.getPassword()
+				)
 		);
 
 		UserNotAllDetails details = UserNotAllDetails.builder()
-			.username(user.getUsername())
-			.email(user.getEmail())
-			.avatar(user.getAvatar())
-			.Role(user.getRole())
-			.build();
+				.username(user.getUsername())
+				.email(user.getEmail())
+				.avatar(user.getAvatar())
+				.Role(user.getRole())
+				.build();
 		final String token = jwtService.generateToken(user);
-		return new AuthenticationResponse(token,details);
+		return new AuthenticationResponse(token, details);
 	}
 
 }
