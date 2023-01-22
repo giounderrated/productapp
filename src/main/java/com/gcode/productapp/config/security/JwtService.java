@@ -53,10 +53,6 @@ public class JwtService {
 	}
 
 	public String generateToken(Map<String, Object> extraClaims, User user) {
-//		Map<String,String> user_data = new HashMap<>();
-//		user_data.put("username",userDetails.getUsername());
-//		user_data.put("userType",userDetails.getAuthorities().toArray()[0].toString());
-//		extraClaims.put("user",user_data);
 		return Jwts.builder()
 				.setClaims(extraClaims)
 				.setSubject(user.getEmail())

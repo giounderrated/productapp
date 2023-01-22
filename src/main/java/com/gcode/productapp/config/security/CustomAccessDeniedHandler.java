@@ -21,7 +21,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 			AccessDeniedException accessDeniedException
 	) throws IOException, ServletException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("Enter custom access hanlder");
 		if (auth != null) {
 			log.info("User: " + auth.getName()
 					+ " attempted to access the protected URL: "

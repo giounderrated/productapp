@@ -19,3 +19,5 @@ https://howtodoinjava.com/spring-boot2/logging/logging-with-lombok/
 https://github.com/ali-bouali/spring-boot-3-jwt-security
 https://github.com/uncle-dave-code/authorization/blob/master/src/main/java/com/uncledavecode/authorization/config/SecurityConfig.java
 
+# exception handling
+https://www.baeldung.com/global-error-handler-in-a-spring-rest-api

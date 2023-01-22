@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public final class Error<T extends Exception> implements JSend<T> {
 
-	private static final String PACKAGE = "com.movie.project";
+	private static final String PACKAGE = "com.gcode.productApp";
 
 	private final String status = "error";
 	private final int code = 500;

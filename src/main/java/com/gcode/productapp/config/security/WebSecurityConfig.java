@@ -48,15 +48,10 @@ public class WebSecurityConfig {
 			//cors
 			.cors()
 			.and()
-			// custom exception AccesDeiend handler
+			// custom exception Access denied handler
 			.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint())
-//				.authenticationEntryPoint((request, response, authException) -> {
-//					String result = "{'message' : 'access denied'}";
-//					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//					response.getWriter().write(result);
-//				});
-			.accessDeniedHandler(accessDeniedHandler());
+				.accessDeniedHandler(accessDeniedHandler());
 		return http.build();
 
 //		http
