@@ -29,7 +29,8 @@ public class AuthenticationService {
 			.avatar(user.getAvatar())
 			.Role(user.getRole())
 			.build();
-		return new AuthenticationResponse(jwtService.generateToken(user),details);
+		final String token = jwtService.generateToken(user);
+		return new AuthenticationResponse(token,details);
 	}
 
 	private User setUser(RegisterRequest request) {
@@ -44,21 +45,28 @@ public class AuthenticationService {
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
+		var user = userService.getUserByEmail(request.getEmail());
+
+		if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
+			throw new IllegalArgumentException("Datos incorrectos");
+		}
+
 		authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(
-				request.getUsername(),
+				request.getEmail(),
 				request.getPassword()
 			)
 		);
-		var user = userService.getUserByUsername(request.getUsername());
+
 		UserNotAllDetails details = UserNotAllDetails.builder()
 			.username(user.getUsername())
 			.email(user.getEmail())
 			.avatar(user.getAvatar())
 			.Role(user.getRole())
 			.build();
-
-		return new AuthenticationResponse(jwtService.generateToken(user),details);
+		final String token = jwtService.generateToken(user);
+		return new AuthenticationResponse(token,details);
 	}
 
 }

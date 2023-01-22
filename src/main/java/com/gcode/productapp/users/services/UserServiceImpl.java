@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService{
 	public User getUserByEmail(String email) {
 		boolean exists = repository.userExistsWithEmail(email);
 		if(!exists){
-			throw new IllegalArgumentException(String.format("username %s does not exists",email));
+			throw new IllegalArgumentException(String.format("email %s does not exists",email));
 		}
 		return repository.getUserByEmail(email);
 	}
@@ -70,11 +70,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        boolean exists = repository.userExistsWithUsername(username);
-        if(!exists){
-            throw new IllegalArgumentException(String.format("username %s does not exists", username));
-        }
-        return repository.getUserByUsername(username);
+		return getUserByEmail(username);
 
     }
     

@@ -1,6 +1,6 @@
 package com.gcode.productapp.config.security;
 
-import com.google.gson.Gson;
+import com.gcode.productapp.users.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +22,7 @@ public class JwtService {
 
 	private final static String SECRET_KEY = "28472B4B6250655368566D5971337436773979244226452948404D635166546A";
 
-	public String extractUsername(String token) {
+	public String extractEmail(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -44,31 +44,22 @@ public class JwtService {
 		return claims;
 	}
 
-//	private Claims extractAllClaims(String token){
-//		return Jwts.parserBuilder()
-//				.setSigningKey(getSignInKey())
-//				.build()
-//				.parseClaimsJws(token)
-//				.getBody();
-//	}
-
 	private Key getSignInKey() {
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
-
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(User userDetails) {
 		return generateToken(new HashMap<>(), userDetails);
 	}
 
-	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-		Map<String,String> user_data = new HashMap<>();
-		user_data.put("username",userDetails.getUsername());
-		user_data.put("userType",userDetails.getAuthorities().toArray()[0].toString());
-		extraClaims.put("user",user_data);
+	public String generateToken(Map<String, Object> extraClaims, User user) {
+//		Map<String,String> user_data = new HashMap<>();
+//		user_data.put("username",userDetails.getUsername());
+//		user_data.put("userType",userDetails.getAuthorities().toArray()[0].toString());
+//		extraClaims.put("user",user_data);
 		return Jwts.builder()
 				.setClaims(extraClaims)
-				.setSubject(userDetails.getUsername())
+				.setSubject(user.getEmail())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(getExpirationDate())
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -76,8 +67,8 @@ public class JwtService {
 	}
 
 	public boolean isTokenValid(String token, UserDetails userDetails) {
-		final String username = extractUsername(token);
-		return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+		final String email = extractEmail(token);
+		return (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
 	}
 
 	private boolean isTokenExpired(String token) {

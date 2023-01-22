@@ -13,8 +13,6 @@ import java.io.UncheckedIOException;
 @ControllerAdvice
 public final class SharedExceptionHandler {
 
-//	private static final Logger LOGGER = LoggerFactory.getLogger(SharedExceptionHandler.class);
-
 	@ExceptionHandler({
 			JsonMappingException.class,
 			IllegalArgumentException.class,

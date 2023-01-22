@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.Map;
 
 public class GetUserByEmail {
-	private static final String QUERY = "SELECT * FROM crud.users where username = ?";
+	private static final String QUERY = "SELECT * FROM crud.users where email = ?";
 	private final JdbcTemplate template;
 
 	public static final GetUserByEmail create(final JdbcTemplate template) {
