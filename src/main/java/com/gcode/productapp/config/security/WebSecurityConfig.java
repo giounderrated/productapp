@@ -25,30 +25,36 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf()
-			.disable()
-			.authorizeHttpRequests()
-			.requestMatchers(AUTH_PATH + "/**")
-			.permitAll()
-			.requestMatchers(HttpMethod.POST, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**").hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
-			.requestMatchers(HttpMethod.PUT, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**").hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
-			.requestMatchers(HttpMethod.DELETE, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**").hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
-			.requestMatchers(HttpMethod.GET, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**").permitAll()
-			.anyRequest()
-			.authenticated()
-			.and()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.authenticationProvider(authenticationProvider)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-			.exceptionHandling()
+				.cors()
+				.and()
+				.csrf()
+				.disable()
+				.authorizeHttpRequests()
+				.requestMatchers(AUTH_PATH + "/**")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
+				.hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
+				.requestMatchers(HttpMethod.PUT, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
+				.hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
+				.requestMatchers(HttpMethod.DELETE, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
+				.hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
+				.requestMatchers(HttpMethod.GET, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authenticationProvider(authenticationProvider)
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint())
 				.accessDeniedHandler(accessDeniedHandler());
 		return http.build();
 
-//		http
-//			.csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
+		// http
+		// .csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
 	}
 
 	@Bean
@@ -57,7 +63,7 @@ public class WebSecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint(){
+	public AuthenticationEntryPoint authenticationEntryPoint() {
 		return new CustomAuthenticationEntryPoint();
 	}
 }
