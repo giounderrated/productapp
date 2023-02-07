@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import static com.gcode.productapp.config.ApiPaths.*;
 
 @Configuration
@@ -38,7 +41,7 @@ public class WebSecurityConfig {
 				.hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
 				.requestMatchers(HttpMethod.DELETE, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
 				.hasAnyAuthority("ROLE_SUPERADMIN", "ROLE_ADMIN")
-				.requestMatchers(HttpMethod.GET, BRANDS_PATH + "/**", PRODUCTS_PATH + "/**", CATEGORIES_PATH + "/**")
+				.requestMatchers(HttpMethod.GET, BRANDS_PATH + "/**",CATEGORIES_PATH + "/**", PRODUCTS_PATH + "/**")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
@@ -65,5 +68,18 @@ public class WebSecurityConfig {
 	@Bean
 	public AuthenticationEntryPoint authenticationEntryPoint() {
 		return new CustomAuthenticationEntryPoint();
+	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowedOrigins("http://localhost:4200", "http://localhost:4200/", "http://localhost:3000")
+						.allowedMethods("*")
+						.allowedHeaders("*");
+			}
+		};
 	}
 }
