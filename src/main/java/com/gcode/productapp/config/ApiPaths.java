@@ -7,5 +7,5 @@ public class ApiPaths {
 	public static final String CATEGORIES_PATH = API_PATH + "/categories";
 	public static final String AUTH_PATH = API_PATH + "/auth";
 	public static final String USERS_PATH = API_PATH + "/users";
-
+	public static final String ADMIN_PATH = API_PATH + "/admin";
 }

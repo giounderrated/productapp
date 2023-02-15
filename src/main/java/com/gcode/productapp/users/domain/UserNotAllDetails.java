@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 public class UserNotAllDetails {
+	private final long id;
 	private final String username;
 	private final String email;
 	private final String avatar;
-	private final Role Role;
+	private final Role role;
 }

@@ -16,7 +16,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws ServletException, IOException {
 		Gson gson = new Gson();
-		String json = gson.toJson(AccessDenied.<String>builder().message("Access denied").data("").build());
+		String json = gson.toJson(AccessDenied.<String>builder().message("Access denied").data(authException.getMessage()).build());
 		response.getWriter().write(json);
 	}
 }

@@ -1,6 +1,7 @@
 package com.gcode.productapp.users.repository;
 
 import com.gcode.productapp.users.domain.User;
+import com.gcode.productapp.users.domain.UserNotAllDetails;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserJDBCRepository implements UserRepository{
 	}
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<UserNotAllDetails> getAllUsers() {
 		GetAllUsers getAll = GetAllUsers.create(template);
 		return getAll.execute();
 	}
@@ -44,6 +45,19 @@ public class UserJDBCRepository implements UserRepository{
 	public boolean userExistsWithUsername(String username) {
 		UserExistWithUsername exists = UserExistWithUsername.create(template);
 		return exists.exists(username);
+	}
+
+	@Override
+	public boolean userExistsWithId(long id) {
+		UserExistsWidhId existsWidhId = UserExistsWidhId.create(template);
+		return existsWidhId.exists(id);
+
+	}
+
+	@Override
+	public User getUserById(long id) {
+		GetUserById getUser = GetUserById.create(template);
+		return getUser.withId(id);
 	}
 
 	@Override

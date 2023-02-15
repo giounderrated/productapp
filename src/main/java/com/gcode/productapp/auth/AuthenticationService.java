@@ -26,10 +26,11 @@ public class AuthenticationService {
 		var user = setUser(request);
 		userService.insertUser(user);
 		UserNotAllDetails details = UserNotAllDetails.builder()
+				.id(user.getId())
 				.username(user.getUsername())
 				.email(user.getEmail())
 				.avatar(user.getAvatar())
-				.Role(user.getRole())
+				.role(user.getRole())
 				.build();
 		final String token = jwtService.generateToken(user);
 		return new AuthenticationResponse(token, details);
@@ -64,10 +65,11 @@ public class AuthenticationService {
 		);
 
 		UserNotAllDetails details = UserNotAllDetails.builder()
+				.id(user.getId())
 				.username(user.getUsername())
 				.email(user.getEmail())
 				.avatar(user.getAvatar())
-				.Role(user.getRole())
+				.role(user.getRole())
 				.build();
 		final String token = jwtService.generateToken(user);
 		return new AuthenticationResponse(token, details);
