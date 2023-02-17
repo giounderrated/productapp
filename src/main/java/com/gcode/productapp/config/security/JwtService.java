@@ -7,10 +7,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +26,12 @@ public class JwtService {
 	public String extractEmail(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
+
 	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
+
 	private Claims extractAllClaims(String token) {
 		Claims claims;
 		try {
@@ -48,6 +51,7 @@ public class JwtService {
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
+
 	public String generateToken(User userDetails) {
 		return generateToken(new HashMap<>(), userDetails);
 	}
@@ -76,6 +80,8 @@ public class JwtService {
 	}
 
 	private Date getExpirationDate() {
-		return new Date(System.currentTimeMillis() + 1000 * 60 * 60*10);
+		Instant now = Instant.now();
+		long millis = now.toEpochMilli();
+		return new Date(millis + 1000*60*10);
 	}
 }
