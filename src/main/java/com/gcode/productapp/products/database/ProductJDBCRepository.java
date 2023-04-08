@@ -6,14 +6,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class ProductJDBCRepository implements ProductRepository{
+public class ProductJDBCRepository implements ProductRepository {
 	private final JdbcTemplate template;
 
-	public static ProductJDBCRepository create(final JdbcTemplate template){
+	public static ProductJDBCRepository create(final JdbcTemplate template) {
 		return new ProductJDBCRepository(template);
 	}
-	private ProductJDBCRepository(final JdbcTemplate template){
-		this.template =template;
+
+	private ProductJDBCRepository(final JdbcTemplate template) {
+		this.template = template;
 	}
 
 	public boolean insertProduct(Product product) {
@@ -22,8 +23,20 @@ public class ProductJDBCRepository implements ProductRepository{
 	}
 
 	public List<ProductInfo> getAllProducts() {
-		 final GetAllProducts products = GetAllProducts.create(template);
+		final GetAllProducts products = GetAllProducts.create(template);
 		return products.execute();
+	}
+
+	@Override
+	public List<ProductInfo> getProductsByPage(int limit, int offset) {
+		final GetPaginatedProducts products = GetPaginatedProducts.create(template);
+		return products.execute(limit,offset);
+	}
+
+	@Override
+	public int count() {
+		final Count count = Count.create(template);
+		return count.count();
 	}
 
 	public boolean productExistsWithId(long productId) {
@@ -32,8 +45,8 @@ public class ProductJDBCRepository implements ProductRepository{
 	}
 
 	public ProductInfo getProduct(long productId) {
-		 final GetProductWithId getProductWithId = GetProductWithId.create(template);
-		 return getProductWithId.withId(productId);
+		final GetProductWithId getProductWithId = GetProductWithId.create(template);
+		return getProductWithId.withId(productId);
 	}
 
 	public boolean deleteProduct(long productId) {
@@ -48,11 +61,10 @@ public class ProductJDBCRepository implements ProductRepository{
 	}
 
 	@Override
-	public boolean insertImagesOfProduct(long id,List<String> images) {
+	public boolean insertImagesOfProduct(long id, List<String> images) {
 		final InsertImagesOfProduct insert = InsertImagesOfProduct.create(template);
-		return insert.insert(id,images);
+		return insert.insert(id, images);
 	}
-	
 
 
 }

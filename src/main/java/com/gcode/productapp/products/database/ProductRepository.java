@@ -8,6 +8,8 @@ import java.util.List;
 public interface ProductRepository {
 	boolean insertProduct(Product product);
 	List<ProductInfo> getAllProducts();
+	List<ProductInfo> getProductsByPage(int limit, int offset);
+	int count();
 	boolean productExistsWithId(long productId);
 	ProductInfo getProduct(long productId);
 	boolean updateProduct(Product product);

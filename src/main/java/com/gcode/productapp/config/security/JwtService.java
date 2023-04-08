@@ -82,6 +82,6 @@ public class JwtService {
 	private Date getExpirationDate() {
 		Instant now = Instant.now();
 		long millis = now.toEpochMilli();
-		return new Date(millis + 1000*60*10);
+		return new Date(millis + 1000*60*60);
 	}
 }

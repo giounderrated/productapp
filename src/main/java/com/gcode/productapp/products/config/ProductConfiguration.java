@@ -1,5 +1,6 @@
 package com.gcode.productapp.products.config;
 
+import com.gcode.productapp.api.Page;
 import com.gcode.productapp.api.UseCase;
 import com.gcode.productapp.products.database.ProductJDBCRepository;
 import com.gcode.productapp.products.database.ProductRepository;
@@ -39,6 +40,10 @@ public class ProductConfiguration {
 	@Bean
 	public UseCase<Void, List<ProductInfo>> getAllProducts(){
 		return GetAllProducts.create(repository);
+	}
+	@Bean
+	public UseCase<Integer, Page<List<ProductInfo>>> getProductsByPage(){
+		return GetProductsByPage.create(repository);
 	}
 	@Bean
 	public static Mapper<String, ProductInfo> getProductInfoMapper() {return ProductInfoMapper.create();}
